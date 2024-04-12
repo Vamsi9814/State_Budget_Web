@@ -1,0 +1,15 @@
+.bar{
+    position:sticky;
+}
+.heading{
+    font-family: 'Times New Roman', Times, serif;
+    font-size:44px;
+    /* position: relative; */
+    
+    /* margin:-1px 9px 8px 7px; */
+}
+.heading img{
+    width:120px;
+    height:120px;
+    float:left
+}

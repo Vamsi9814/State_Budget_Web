@@ -1,0 +1,114 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.card mx-4 mx-md-5 shadow-5-strong{
+  height:50px;
+}
+
+.form-control{
+    height: 40px;
+    display: 'flex';
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: cursor;
+    font-size: 15px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+.form-control:hover{
+    border-color: #0f0f34;
+}
+#mailid{
+    width: 500px;
+}
+
+.google-btn {
+  width: 170px;
+  height: 35px;
+  background-color: #4285f4;
+  align-items: center;
+  flex-wrap: wrap-reverse;
+  border-radius: 2px;
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,.25);
+  .google-icon-wrapper {
+    position: absolute;
+    margin-top: 1px;
+    margin-left: 10px;
+    width: 30px;
+    height: 40px;
+    border-radius: 2px;
+    align-items: center;
+  }
+  .google-icon {
+    position: relative;
+    margin-top: 2px;
+    margin-left: -10px;
+    width: 28px;
+    height: 28px;
+  }
+  .btn-text {
+    float: right ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 5px 11px 0 0;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    font-family: "Roboto";
+    cursor:default;
+  }
+  &:hover {
+    box-shadow: 0 0 6px #4285f4;
+  }
+  &:active {
+    background: #1669F2;
+  }
+}
+
+
+.si-aadhar {
+  width: 170px;
+  height: 35px;
+  position:absolute;
+  margin-top:-35px;
+  margin-left: 500px;
+  background-color: #4285f4;
+  align-items: center;
+  flex-wrap: wrap-reverse;
+  border-radius: 2px;
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,.25);
+.aa-icon-wrapper {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 10px;
+  width: 30px;
+  height: 40px;
+  border-radius: 2px;
+  align-items: center;
+}
+.aadhar-icon {
+  position: relative;
+  margin-top: 2px;
+  margin-left: -10px;
+  width: 28px;
+  height: 28px;
+}
+.btn-text {
+  float: right ;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 5px 3px 0 0;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  font-family: "Roboto";
+  cursor:default;
+}
+&:hover {
+  box-shadow: 0 0 6px #4285f4;
+}
+&:active {
+  background: #1669F2;
+}
+} 
