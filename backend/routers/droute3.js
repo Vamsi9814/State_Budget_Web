@@ -1,20 +1,20 @@
 const express = require("express");
-const districtbudget = require('../models/district')
+const districtbudget3 = require('../models/district3')
 const router = express.Router();
 
-router.get("/daddbudget", async (req, res)=> {
+router.get("/daddbudget3", async (req, res)=> {
   try {
-    const data = await districtbudget.find({})
+    const data = await districtbudget3.find({})
     res.status(200).json({budgetData: data})
   } catch (error) {
     res.status(500).json(error);
   }
 })
 
-router.post("/daddbudget", async (req, res) => {
+router.post("/daddbudget3", async (req, res) => {
     try {
         const {name,usedbudget} = req.body;
-        const dataUnit =await districtbudget.findOne({name});
+        const dataUnit =await districtbudget3.findOne({name});
         dataUnit.usedbudget=usedbudget;
         dataUnit.save();
         res.status(200).json({msg:"data updated"})

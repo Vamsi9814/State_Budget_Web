@@ -1,16 +1,16 @@
 import React from "react"
 import MinNavbar1 from "./minnavbar1"
 import Footer from "../Footer"
-import Transportation3 from "../Transportation3"
-function EduMain(){
+import Transportation2 from "../Transportation2"
+function HealthMain(){
     return (<>
         <div>
             <h1>Health</h1>
             <MinNavbar1/>
-            <Transportation3/>
+            <Transportation2/>
             <Footer/>
         </div>
     </>)
 }
 
-export default EduMain;
+export default HealthMain;

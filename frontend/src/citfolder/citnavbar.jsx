@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../Home.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-const navigate = useNavigate;
+const navigate = useNavigate();
 
 
 function CitHome() {

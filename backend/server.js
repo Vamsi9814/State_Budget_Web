@@ -6,15 +6,20 @@ const muser = require('./routers/mroute');
 const suser = require('./routers/sroute');
 const bud = require('./routers/broute');
 const duser = require('./routers/droute');
+const duser2 = require('./routers/droute2');
+const duser3 = require('./routers/droute3');
 const express =require('express');
 const bp = require('body-parser');
 const cors = require('cors');
-const users=require('./models/citizen');
-const districtbudget = require('./models/district');
 app = express();
 app.use(express.json());
-app.use(cors());
-//{json}  require('express');
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://172.50.2.55:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);//{json}  require('express');
 // app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 app.use(bp.json());
@@ -78,6 +83,8 @@ app.use('/muse',muser);
 app.use('/suse',suser);
 app.use('/buse',bud);
 app.use('/duse',duser);
+app.use('/duse2',duser2);
+app.use('/duse3',duser3);
 
 app.listen(port, ()=>{
   console.log(`connected successfully on port ${port}`);

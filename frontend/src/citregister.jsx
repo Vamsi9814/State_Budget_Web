@@ -3,15 +3,15 @@ import './components/Header'
 import './Footer'
 import {useState} from "react";
 //import { useHistory } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 //import fetch from 'node-fetch'
 import axios from "axios";
-import { alignProperty } from '@mui/material/styles/cssUtils';
+import useAuth from "./hooks/useAuth";
 function CitRegister(){
   // const [redirectUrl, setRedirectUrl] = useState("");
   //const history = useHistory();
   const navigate = useNavigate();
-
+  const { setAuth } = useAuth();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -59,7 +59,8 @@ function CitRegister(){
       }
 
     }*/
-
+    const location = useLocation();
+    const from = location.state?.from?.pathname || `/citfolder/cithome`;
     const postdata = async(e)=>{
       e.preventDefault();
       try{
@@ -70,9 +71,15 @@ function CitRegister(){
         password: password,
         aadharnumber: aadharNumber,
       });
-      //const data = response.data;
+      const data = response.data;
       //console.log(data);
-      navigate('/citfolder/cithome');
+      const { accessToken, role, user } = response.data;
+            localStorage.setItem("email", user);
+        // handleSuccess(message);
+            setAuth({ user, role, accessToken });
+            setTimeout(() => {
+              navigate(from, { replace: true });
+            }, 500);
     }catch(err){
         console.log("error caught");
       }

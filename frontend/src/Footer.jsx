@@ -1,5 +1,6 @@
 import React from "react";
 import "./footer.css";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -16,42 +17,17 @@ const Footer = () => {
         <p>
           <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
         </p>
-        <div className="follow">
-          <h4>Follow us</h4>
-          <div className="icon"></div>
-        </div>
       </div>
 
-      <div className="col">
+      <div className="col2">
         <h4>About</h4>
-        <a href="#">About us</a>
-        <a href="#">Delivery Information</a>
+        <Link to="/contact">About us</Link>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms & Conditions</a>
-        <a href="#">Contact Us</a>
-      </div>
-
-      <div className="col">
-        <h4>My Account</h4>
-        <a href="#">Sign In</a>
-        <a href="#">View Cart</a>
-        <a href="#">My Wishlist</a>
-        <a href="#">Track My Order</a>
-        <a href="#">Help</a>
-      </div>
-
-      <div className="col install">
-        <h4>Install App</h4>
-        <p>From App Store or Google Play Store</p>
-        {/*<div className="row">
-          <img src={appImg} alt="" />
-        </div>
-        <p>Secured Payment Gateways </p>
-  <img src={payImg} alt="" />*/}
       </div>
 
       <div className="copyright">
-        <p>2023, Ecommerce Template</p>
+        <p>2024, Transparency Connect</p>
       </div>
     </footer>
   );

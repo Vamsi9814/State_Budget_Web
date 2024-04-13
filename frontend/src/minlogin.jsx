@@ -2,72 +2,47 @@ import './Login.css';
 import './components/Header'
 import './Footer'
 import {useState} from "react";
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate,useLocation } from 'react-router-dom';
+import useAuth from "./hooks/useAuth";
 function MinLogin(){
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [stateName, setStateName] = useState("");
-    const navigate = useNavigate();
-    
-    function takeemail(event){
-      setEmail(
-        event.target.value
-      )
+  const { setAuth } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  
+
+  const verifydata = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8000/muse/minlogin", {
+         email:email, password:password 
+      },{withCredentials:true});
+      console.log(response.data);
+      const {success,message}=response.data;
+        if (success) {
+          const { accessToken, user } = response.data;
+          console.log(response.data);
+          localStorage.setItem("email", user);
+
+          const from = location.state?.from?.pathname || `/minfolder/${user.substring(0,user.length-20)}`;
+      // handleSuccess(message);
+          setAuth({ user, accessToken });
+          setTimeout(() => {
+            navigate(from, { replace: true });
+          }, 500);
+        } else {
+          handleError(message);
+        } 
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Login failed:", error);
+      alert("An error occurred during login. Please try again later.");
     }
-
-    function takepassword(event){
-      setPassword(
-        event.target.value
-      )
-    }
-
-    function takestate(event){
-      setStateName(
-        event.target.value
-      )
-    }
-
-
-    const verifydata=async (event)=> {
-      event.preventDefault();
-      try {
-          // const { email, password } = userData;// Destructure email and password from userData
-          const result = await fetch("http://localhost:8000/muse/minlogin", {
-            email:email, password:password // Send email and password in the request body
-          });
-          console.log(result);
-    
-        if (result) {
-          
-          if (data.success) {
-            // Login successful, navigate to the desired page
-            if (minid===1){
-              navigate('../minfolder/education');
-            }
-            else if (minid===2){
-              navigate('../minfolder/finance');
-            }
-            else if (minid===3){
-              navigate('../minfolder/urban');
-            }
-          } else {
-            // Login failed, display the error message
-            console.log(error);
-            alert(response.message);
-          }
-
-          // const response = await result.json(); // Parse the response JSON
-          // Handle successful login response
-          // console.log("Login successful:", response);
-          // Do something with the response, such as redirecting the user or updating UI
-      } 
-    }catch (error) {
-          // Handle login error
-          console.error("Login failed:", error);
-          // Optionally, display an error message to the user
-      }
-  }
+  };
 
 
     return(
@@ -117,14 +92,6 @@ function MinLogin(){
                     </div>
                     <p class="btn-text"><b>Sign in with Google</b></p>
                 </div>
-                <div class="si-aadhar">
-                    <div class="aa-icon-wrapper">
-                        <img class="aadhar-icon" src="/aadhar.png"/>
-                    </div>
-                    <p class="btn-text"><b>Sign in with Aadhaar </b></p>
-                </div>
-                <p>Do Not have an account?</p>
-                <a href="./minregister.jsx">Create an account</a>
               </form>
             </div>
           </div>

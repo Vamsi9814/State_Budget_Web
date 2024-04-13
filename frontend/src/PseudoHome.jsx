@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate,useLocation } from 'react-router-dom';
 
 
-function Home() {
+function PseudoHome() {
       const [activeMinistry, setActiveMinistry] = useState(null);
       const [activeSubOption, setActiveSubOption] = useState(null);
       const navigate = useNavigate();
@@ -43,9 +43,9 @@ function Home() {
                 <li className="nav-item">
                 <Link  to="/contact" className="nav-link">Contact</Link>
                 </li>
-                <li className="dropdown nav-item">
-                  <a href="#" className="nav-item">Ministries</a>
-                  <div className="dropdown-content">
+                <li>
+                  <Link to="/login" className="nav-item">Ministries</Link>
+                  {/* <div className="dropdown-content">
                     <Link to="/citizen/finance"
                       className={`dropdown-item${activeMinistry === 'finance' ? ' active' : ''}`}
                       onClick={() => handleMinistryClick('finance')}
@@ -64,7 +64,7 @@ function Home() {
                     >
                       Health
                     </Link>
-                  </div>
+                  </div> */}
                 </li>
               </ul>
             </nav>
@@ -151,5 +151,5 @@ function Home() {
   );
 }
 
-export default Home;
+export default PseudoHome;
 

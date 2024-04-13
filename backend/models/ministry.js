@@ -8,10 +8,6 @@ const mregistrationSchema = new Schema({
         required: true,
         unique: true,
     },
-    minid:{
-        type: Number,
-        required: true 
-    },
     email:{
         type: String,
         required: true,

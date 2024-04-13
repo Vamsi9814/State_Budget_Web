@@ -2,9 +2,13 @@ import './Login.css';
 import './components/Header'
 import './Footer'
 import {useState} from "react";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
+import useAuth from "./hooks/useAuth";
+
 function CitLogin(){
+  const { setAuth } = useAuth();
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -28,6 +32,9 @@ function CitLogin(){
       setEmail(
         event.target.value
       )
+      localStorage.setItem("email", event.target.value)
+      console.log("in set-email");
+      console.log(localStorage.getItem("email"));
     }
 
     function takepassword(event){
@@ -41,33 +48,33 @@ function CitLogin(){
         event.target.value
       )
     }
-
+    const location = useLocation();
+    const from = location.state?.from?.pathname || `/citfolder/cithome`;
 
     const verifydata = async (event) => {
       event.preventDefault();
       try {
-        const result = await axios.post("http://localhost:8000/cuse/citlogin", {
+        const response = await axios.post("http://localhost:8000/cuse/citlogin", {
          
            email:email, password:password 
-        });
-        console.log(result);
+        },{withCredentials:true});
+        console.log(response.data);
+        const {success,message}=response.data;
     
-        if (result) {
           
-          if (result.data.success) {
-            // Login successful, navigate to the desired page
-            navigate('/citfolder/cithome');
+          if (success) {
+
+            const { accessToken, role, user } = response.data;
+            localStorage.setItem("email", user);
+            console.log(localStorage.getItem("email"));
+        // handleSuccess(message);
+            setAuth({ user, role, accessToken });
+            setTimeout(() => {
+              navigate(from, { replace: true });
+            }, 500);
           } else {
-            // Login failed, display the error message
-            console.log(error);
-            alert(response.message);
-          }
-        } else {
-          // Request failed
-          console.log("error found");
-          //const errorData = await result.json();
-          //alert(`Error: ${errorData.message}`);
-        }
+            handleError(message);
+          } 
       } catch (error) {
         // Handle network or other errors
         console.error("Login failed:", error);
@@ -101,7 +108,7 @@ function CitLogin(){
         <div className="card-body py-5 px-md-5">
           <div className="row d-flex justify-content-center">
             <div className="col-lg-8">
-              <h2 className="fw-bold mb-5">Sign up now</h2>
+              <h2 className="fw-bold mb-5">Login  now</h2>
               <form onSubmit={verifydata}>
                 
                 <div className="form-outline mb-4">
@@ -122,15 +129,9 @@ function CitLogin(){
                     </div>
                     <p class="btn-text"><b>Sign in with Google</b></p>
                 </div>
-                <div class="si-aadhar">
-                    <div class="aa-icon-wrapper">
-                        <img class="aadhar-icon" src="/aadhar.png"/>
-                    </div>
-                    <p class="btn-text"><b>Sign in with Aadhaar </b></p>
-                </div>
 
                 <p>Do Not have an account?</p>
-                <a href="./citregister.jsx">Create an account</a>
+                <Link to="/register">Create an account</Link>
               </form>
             </div>
           </div>

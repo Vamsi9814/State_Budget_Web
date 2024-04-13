@@ -1,10 +1,10 @@
 import React from "react";
-import CitHome from "./citnavbar";
+import Home from "../Home";
 
-function CitMain(){
+function CitHome(){
     return (<>
-        <CitHome/>;
+        <Home/>;
     </>)
 }
 
-export default CitMain;
+export default CitHome;

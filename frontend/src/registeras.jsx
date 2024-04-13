@@ -54,8 +54,6 @@ export default function RegisterAs() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Citizen" {...a11yProps(0)} />
-          <Tab label="Minister" {...a11yProps(1)} />
-          <Tab label="State" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Carousel from './SliderDataTransport';
 import axios from 'axios';
 import './Transportation.css';
-import Check from './Check';
 
-function Transportation() {
+function Transportation2() {
   const [editIndex, setEditIndex] = useState(-1);
   const [budgetData, setBudgetData] = useState([]);
   const [editedBudget, setEditedBudget] = useState(0);
@@ -16,7 +15,7 @@ function Transportation() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get('http://localhost:8000/duse/daddbudget');
+        const response = await axios.get('http://localhost:8000/duse3/daddbudget3');
         const data = response.data.budgetData;
         setBudgetData(data);
       } catch (error) {
@@ -53,23 +52,23 @@ function Transportation() {
     } else {
       setBudgetData((oldData) => {
         const newData = [...oldData];
-        newData.sort((a, b) => a.name.localeCompare(b.name));
+        newData.sort((a, b) => a.districtName.localeCompare(b.districtName));
         return newData;
       });
     }
   }, [sortBy]);
 
   const filteredData = budgetData.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.districtName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleEdit = async (index) => {
     setEditIndex(index);
     setEditedBudget(filteredData[index].usedbudget);
-    setEditedDistrict(filteredData[index].name);
+    setEditedDistrict(filteredData[index].districtName);
   };
 
-  const handleSaveNewData = async (allocatedBudget, usedBudget, name) => {
+  const handleSaveNewData = async (allocatedBudget, usedBudget, districtName) => {
     if (editedBudget + usedBudget > allocatedBudget) {
       alert('Cannot be updated: New used budget exceeds allocated budget');
       return;
@@ -77,13 +76,13 @@ function Transportation() {
 
     const newUsedBudget = editedBudget + usedBudget;
     try {
-      const response = await axios.post('http://localhost:8000/duse/daddbudget', {
-        name,
+      const response = await axios.post('http://localhost:8000/duse3/daddbudget3', {
+        districtName,
         usedbudget: newUsedBudget,
       });
       setBudgetData((oldData) =>
         oldData.map((data) =>
-          data.name === name
+          data.districtName === districtName
             ? { ...data, usedbudget: newUsedBudget }
             : data
         )
@@ -145,7 +144,7 @@ function Transportation() {
           <tbody>
             {filteredData.map((item, index) => (
               <tr key={index}>
-                <td>{item.name}</td>
+                <td>{item.districtName}</td>
                 <td>{item.allocatedbudget}</td>
                 <td>
                   {editIndex === index ? (
@@ -158,7 +157,7 @@ function Transportation() {
                         onChange={(e) => setEditedBudget(parseInt(e.target.value))}
                         placeholder="enter new data"
                       />
-                      <button onClick={() => handleSaveNewData(item.allocatedbudget, item.usedbudget, item.name)}>
+                      <button onClick={() => handleSaveNewData(item.allocatedbudget, item.usedbudget, item.districtName)}>
                         save
                       </button>
                     </>
@@ -170,7 +169,7 @@ function Transportation() {
                   <button
                     style={{
                       padding: '5px 10px',
-                      backgroundColor: editIndex === index ? '#007bff' : '#001060',
+                      backgroundColor: editIndex === index ? '#007bff' : '#001060', // Change button color for editing
                       color: '#fff',
                       border: 'none',
                       borderRadius: '5px',
@@ -185,10 +184,9 @@ function Transportation() {
             ))}
           </tbody>
         </table>
-        <Check/>
       </div>
     </div>
   );
 }
 
-export default Transportation;
+export default Transportation2;

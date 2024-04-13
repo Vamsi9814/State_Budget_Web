@@ -108,12 +108,6 @@ function StateLogin(){
                     </div>
                     <p class="btn-text"><b>Sign in with Google</b></p>
                 </div>
-                <div class="si-aadhar">
-                    <div class="aa-icon-wrapper">
-                        <img class="aadhar-icon" src="/aadhar.png"/>
-                    </div>
-                    <p class="btn-text"><b>Sign in with Aadhaar </b></p>
-                </div>
 
                 <p>Do Not have an account?</p>
                 <a href="./stateregister.jsx">Create an account</a>
