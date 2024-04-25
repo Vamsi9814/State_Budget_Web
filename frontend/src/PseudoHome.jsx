@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
 import { useNavigate,useLocation } from 'react-router-dom';
-
+import useAuth from './hooks/useAuth';
 
 function PseudoHome() {
+      const { auth } = useAuth();
       const [activeMinistry, setActiveMinistry] = useState(null);
       const [activeSubOption, setActiveSubOption] = useState(null);
       const navigate = useNavigate();
@@ -44,7 +45,9 @@ function PseudoHome() {
                 <Link  to="/contact" className="nav-link">Contact</Link>
                 </li>
                 <li>
-                  <Link to="/login" className="nav-item">Ministries</Link>
+                  <>
+                  {auth?.user ? (<></>):( <Link to="/login" className="nav-item">Ministries</Link>)}
+                  </>
                   {/* <div className="dropdown-content">
                     <Link to="/citizen/finance"
                       className={`dropdown-item${activeMinistry === 'finance' ? ' active' : ''}`}
@@ -85,15 +88,15 @@ function PseudoHome() {
         <section className="stats">
           <div className="stat">
             <h3>Total Budget</h3>
-            <p className="amount">$100B</p>
+            <p className="amount">100Cr</p>
           </div>
           <div className="stat">
             <h3>Revenue</h3>
-            <p className="amount">$80B</p>
+            <p className="amount">80Cr</p>
           </div>
           <div className="stat">
             <h3>Expenditure</h3>
-            <p className="amount">$95B</p>
+            <p className="amount">95Cr</p>
           </div>
         </section>
 

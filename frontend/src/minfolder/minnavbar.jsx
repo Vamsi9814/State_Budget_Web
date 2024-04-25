@@ -1,4 +1,4 @@
-function MinNavbar() {
+function MinNavbar({props}) {
     return (
       <>
   <div className="bar">

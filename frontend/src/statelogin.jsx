@@ -101,11 +101,11 @@ function StateLogin(){
         <div className="card-body py-5 px-md-5">
           <div className="row d-flex justify-content-center">
             <div className="col-lg-8">
-              <h2 className="fw-bold mb-5">Sign up now</h2>
+              <h2 className="fw-bold mb-5">Authority Login</h2>
               <form onSubmit={verifydata}>
 
                 <div className="form-outline mb-4">
-                  <input type="email" id="mailid" className="form-control" onChange={(event)=>setEmail(event.target.value)}/>
+                  <input type="email" id="form2Example4" className="form-control" onChange={(event)=>setEmail(event.target.value)}/>
                   <label className="form-label" htmlFor="mailid" onclick="takeemail">Email address</label>
                 </div>
 
@@ -117,15 +117,7 @@ function StateLogin(){
 
                 <button type="submit" className="btn btn-primary btn-block mb-4">Log In</button>
 
-                <div class="google-btn">
-                    <div class="google-icon-wrapper">
-                        <img class="google-icon" src="/google image.png"/>
-                    </div>
-                    <p class="btn-text"><b>Sign in with Google</b></p>
-                </div>
 
-                <p>Do Not have an account?</p>
-                <a href="./stateregister.jsx">Create an account</a>
               </form>
             </div>
           </div>

@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useNavigate,useLocation } from 'react-router-dom';
 import useAuth from "./hooks/useAuth";
 function MinLogin(){
-
   const { setAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,19 +17,20 @@ function MinLogin(){
   const verifydata = async (event) => {
     event.preventDefault();
     try {
+      console.log("frontend");
       const response = await axios.post("http://localhost:8000/muse/minlogin", {
          email:email, password:password 
       },{withCredentials:true});
       console.log(response.data);
       const {success,message}=response.data;
         if (success) {
-          const { accessToken, user } = response.data;
+          const { accessToken, role,user } = response.data;
           console.log(response.data);
           localStorage.setItem("email", user);
 
           const from = location.state?.from?.pathname || `/minfolder/${user.substring(0,user.length-20)}`;
       // handleSuccess(message);
-          setAuth({ user, accessToken });
+          setAuth({ user,role, accessToken });
           setTimeout(() => {
             navigate(from, { replace: true });
           }, 500);
@@ -48,7 +48,6 @@ function MinLogin(){
     return(
         <>
     <section className="text-center">
-      {/* Background image */}
       <div
         className="p-5 bg-image"
         style={{
@@ -56,7 +55,6 @@ function MinLogin(){
           height: '200px'
         }}
       />
-      {/* Background image */}
 
       <div
         className="card mx-4 mx-md-5 shadow-5-strong"
@@ -69,11 +67,11 @@ function MinLogin(){
         <div className="card-body py-5 px-md-5">
           <div className="row d-flex justify-content-center">
             <div className="col-lg-8">
-              <h2 className="fw-bold mb-5">Sign up now</h2>
+              <h2 className="fw-bold mb-5">Minister Login</h2>
               <form onSubmit={verifydata}>
 
                 <div className="form-outline mb-4">
-                  <input type="email" id="mailid" className="form-control" value={email} onChange={(event)=>setEmail(event.target.value)}/>
+                  <input type="email" id="form2Example4" className="form-control" value={email} onChange={(event)=>setEmail(event.target.value)}/>
                   <label className="form-label" htmlFor="mailid" onclick="takeemail">Email address</label>
                 </div>
               
@@ -84,14 +82,7 @@ function MinLogin(){
                 </div>
 
 
-                <button type="submit" className="btn btn-primary btn-block mb-4" onClick={verifydata}>Log In</button>
-
-                <div class="google-btn">
-                    <div class="google-icon-wrapper">
-                        <img class="google-icon" src="/google image.png"/>
-                    </div>
-                    <p class="btn-text"><b>Sign in with Google</b></p>
-                </div>
+                <button type="submit" className="btn btn-primary btn-block mb-4" onClick={verifydata}>Login</button>
               </form>
             </div>
           </div>

@@ -67,6 +67,11 @@ function Home() {
                   </div>
                 </li>
               </ul>
+              <button id="menu-toggle" class="menu-toggle"> {/* Add button with menu-toggle class */}
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
             </nav>
           </header>
         </div>

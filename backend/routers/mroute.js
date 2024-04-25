@@ -95,9 +95,8 @@ router.post("/minregister", async (req, res) => {
 
 router.post("/minlogin", async (req, res) => {
   try {
-    
     console.log(req.body);
-    // console.log("backend");
+    console.log("backend");
     const {email,password}=req.body
     if (!email || !password) {
       return res
@@ -135,21 +134,22 @@ router.post("/minlogin", async (req, res) => {
       success: true,
       accessToken: accessToken,
       user: user.email,
+      role:1,
     });
     // next();
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: error.message,name:none });
+    res.status(500).json({ success: false, message: error.message });
   } 
 });
 
-const refreshTokenController = async (req, res) => {
+router.route("/refresh").get( async (req, res) => {
   //   console.log("refreshtoken");
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
   const refreshToken = cookies.jwt;
 
-  const user = await Citregistration.findOne({ refreshToken }).exec();
+  const user = await minregistration.findOne({ refreshToken }).exec();
   if (!user) return res.sendStatus(403); //Forbidden
   // evaluate jwt
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
@@ -157,6 +157,7 @@ const refreshTokenController = async (req, res) => {
     const studInfo = {
       id: user._id,
       user: user.email,
+      role: 1,
     };
     // console.log(studInfo);
     const accessToken = createAccessToken(studInfo);
@@ -168,8 +169,7 @@ const refreshTokenController = async (req, res) => {
       user: user.email,
     });
   });
-};
-
+});
 const Logout = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) {
@@ -179,7 +179,7 @@ const Logout = async (req, res) => {
   const refreshToken = cookies.jwt;
 
   // Is refreshToken in db?
-  const user = await Citregistration.findOne({ refreshToken }).exec();
+  const user = await minregistration.findOne({ refreshToken }).exec();
   if (!user) {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     return res.sendStatus(204);

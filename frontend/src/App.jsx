@@ -73,11 +73,11 @@ function App() {
             <Route path="/minfolder/egallery" element={<EduGallery/>}/>
             <Route path="/minfolder/finance" element={<FinanceMain/>}/>
             <Route path="/minfolder/health" element={<HealthMain/>}/>
-            <Route path="/minfolder/fachi" element={<FinAchi/>}/>
-            <Route path="/minfolder/fdev" element={<FinDev/>}/>
-            <Route path="/minfolder/fgallery" element={<FinanceGallery/>}/>
-            <Route path="/minfolder/uachi" element={<UrbanAchi/>}/>
-            <Route path="/minfolder/udev" element={<UrbanDev/>}/>
+            <Route path="/fachi" element={<FinAchi/>}/>
+            <Route path="/fdev" element={<FinDev/>}/>
+            <Route path="/fgallery" element={<FinanceGallery/>}/>
+            <Route path="/uachi" element={<UrbanAchi/>}/>
+            <Route path="/udev" element={<UrbanDev/>}/>
             <Route path="/minfolder/urban" element={<UrbanGallery/>}/>
             <Route path="/minfolder/urban" element={<UrbanMain/>}/>
             <Route path="/minfolder/minhome" element={<MinHome/>}/>

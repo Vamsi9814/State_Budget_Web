@@ -1,5 +1,7 @@
 import './Login.css';
 import './components/Header'
+import {GoogleLoginButton} from "react-social-login-buttons";
+import {LoginSocialGoogle} from "reactjs-social-login";
 import './Footer'
 import {useState} from "react";
 import { Link } from 'react-router-dom';
@@ -108,11 +110,11 @@ function CitLogin(){
         <div className="card-body py-5 px-md-5">
           <div className="row d-flex justify-content-center">
             <div className="col-lg-8">
-              <h2 className="fw-bold mb-5">Login  now</h2>
+              <h2 className="fw-bold mb-5">Citizen Login</h2>
               <form onSubmit={verifydata}>
                 
                 <div className="form-outline mb-4">
-                  <input type="email" id="mailid" className="form-control" value={email} onChange={(event)=>setEmail(event.target.value)}/>
+                  <input type="email" id="form2Example4" className="form-control" value={email} onChange={(event)=>setEmail(event.target.value)}/>
                   <label className="form-label" htmlFor="mailid" onclick="takeemail">Email address</label>
                 </div>
 
@@ -121,7 +123,8 @@ function CitLogin(){
                   <label className="form-label" htmlFor="form3Example4" onclick="takepassword">Password</label>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block mb-4" onclick="verifydata">Login In</button>
+                <button type="submit" className="btn btn-primary btn-block mb-4" onclick="verifydata">Login</button>
+
 
                 <div class="google-btn">
                     <div class="google-icon-wrapper">
@@ -130,9 +133,24 @@ function CitLogin(){
                     <p class="btn-text"><b>Sign in with Google</b></p>
                 </div>
 
-                <p>Do Not have an account?</p>
+                <p id="paragraph">Do Not have an account?</p>
                 <Link to="/register">Create an account</Link>
               </form>
+              
+              {/* <LoginSocialGoogle
+                    client_id={"644726226180-33su7jphh1vhhldktq70h1q32b2f4ell.apps.googleusercontent.com"}
+                    scope="openid profile email"
+                    discoveryDocs="claims_supported"
+                    access_type="offline"
+                    onResolve={({ provider, data }) => {
+                      console.log(provider, data);
+                    }}
+                    onReject={(err) => {
+                      console.log(err);
+                    }}
+                  >
+                    {/*  <GoogleLoginButton /> */}
+                  {/* </LoginSocialGoogle>  */}
             </div>
           </div>
         </div>

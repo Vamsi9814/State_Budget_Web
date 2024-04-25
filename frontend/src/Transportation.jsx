@@ -33,9 +33,6 @@ function Transportation() {
     setSortBy(value);
   };
 
-  const handleComplaint = (event) => {
-    setComplaint(event.target.value);
-  };
 
   useEffect(() => {
     if (sortBy === 'allocatedbudget') {
@@ -94,20 +91,6 @@ function Transportation() {
     setEditIndex(-1);
   };
 
-  const handleEmailSubmit = async () => {
-    try {
-      const response = await axios.post('http://localhost:8000/cuse/send-email', {
-        complaint,
-      });
-      if (response.ok) {
-        console.log('Email sent successfully');
-      } else {
-        console.error('Failed to send email');
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  };
 
   return (
     <div>
