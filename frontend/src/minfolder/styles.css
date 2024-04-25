@@ -1,0 +1,21 @@
+.achievements-page {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .achievement {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .achievement h2 {
+    margin-top: 0;
+  }
+  
+  .achievement p {
+    margin-bottom: 0;
+  }
+  

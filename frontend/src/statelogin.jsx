@@ -2,15 +2,19 @@ import './Login.css';
 import './components/Header'
 import './Footer'
 import {useState} from "react";
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate,useLocation } from 'react-router-dom';
+import useAuth from "./hooks/useAuth";
 function StateLogin(){
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
 
+  // const location = useLocation();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [aadharNumber, setAadharNumber] = useState("");
-    const navigate = useNavigate();
     function takefname(event){
       setFirstName(
         event.target.value
@@ -41,26 +45,37 @@ function StateLogin(){
       )
     }
 
+    const location = useLocation();
+  
 
-    async function verifydata(event, userData) {
-      event.preventDefault();
-      try {
-          const { email, password } = userData; // Destructure email and password from userData
-          const result = await fetch("http://localhost:8000/suse/statelogin", {
-            email:email, password:password // Send email and password in the request body
-          });
+  const verifydata = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8000/suse/statelogin", {
+         email:email, password:password 
+      },{withCredentials:true});
+      console.log(response.data);
+      const {success,message}=response.data;
+        if (success) {
+          const { accessToken, user } = response.data;
+          console.log(response.data);
+          localStorage.setItem("email", user);
 
-          navigate('/statefolder/statehome')
-          const response = await result.json(); // Parse the response JSON
-          // Handle successful login response
-          console.log("Login successful:", response);
-          // Do something with the response, such as redirecting the user or updating UI
-      } catch (error) {
-          // Handle login error
-          console.error("Login failed:", error);
-          // Optionally, display an error message to the user
-      }
-  }
+          const from = location.state?.from?.pathname || `/statefolder/statehome`;
+      // handleSuccess(message);
+          setAuth({ user, accessToken });
+          setTimeout(() => {
+            navigate(from, { replace: true });
+          }, 500);
+        } else {
+          handleError(message);
+        } 
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Login failed:", error);
+      alert("An error occurred during login. Please try again later.");
+    }
+  };
 
     return(
         <>
@@ -121,6 +136,26 @@ function StateLogin(){
 
         </>
     );
-}
+  }
+
 
 export default StateLogin;
+
+// async function verifydata(event, userData) {
+    //   event.preventDefault();
+    //   try {
+    //       const { email, password } = userData; // Destructure email and password from userData
+    //       const result = await fetch("http://localhost:8000/suse/statelogin", {
+    //         email:email, password:password // Send email and password in the request body
+    //       });
+
+    //       navigate('/statefolder/statehome')
+    //       const response = await result.json(); // Parse the response JSON
+    //       // Handle successful login response
+    //       console.log("Login successful:", response);
+    //       // Do something with the response, such as redirecting the user or updating UI
+    //   } catch (error) {
+    //       // Handle login error
+    //       console.error("Login failed:", error);
+    //       // Optionally, display an error message to the user
+    //   }

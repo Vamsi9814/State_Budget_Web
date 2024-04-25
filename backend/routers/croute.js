@@ -173,6 +173,7 @@ router.post("/citlogin", async (req, res) => {
     // navigate('/citfolder/cithome');
     const userinfo = {
       id: user._id,
+      role: 0,
       user: user.email,
     };
     // console.log(userinfo);
@@ -192,6 +193,7 @@ router.post("/citlogin", async (req, res) => {
       success: true,
       accessToken: accessToken,
       user: user.email,
+      role:0,
     });
     // next();
   } catch (error) {
@@ -200,7 +202,7 @@ router.post("/citlogin", async (req, res) => {
   } 
 });
 
-const refreshTokenController = async (req, res) => {
+router.route("/refresh").get( async (req, res) => {
   //   console.log("refreshtoken");
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(401);
@@ -214,18 +216,19 @@ const refreshTokenController = async (req, res) => {
     const studInfo = {
       id: user._id,
       user: user.email,
+      role: 0,
     };
     // console.log(studInfo);
     const accessToken = createAccessToken(studInfo);
     res.json({
       message: "Access Token generated succesfully",
       success: true,
-      role: 1,
+      role: 0,
       accessToken: accessToken,
       user: user.email,
     });
   });
-};
+});
 
 const Logout = async (req, res) => {
   const cookies = req.cookies;

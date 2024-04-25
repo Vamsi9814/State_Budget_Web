@@ -48,6 +48,11 @@ module.exports=  router;*/
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const {
+  createAccessToken,
+  createRefreshToken,
+} = require("../utils/createSecretToken");
+const jwt = require("jsonwebtoken");
 
 //import citregistration from '../models/state.js';
 const stateregistration = require("../models/state.js");
@@ -102,19 +107,52 @@ router.post("/stateregister", async (req, res) => {
 
 router.post("/statelogin", async (req, res) => {
   try {
+    
     console.log(req.body);
-    const user = await stateregistration.findOne({ email: req.body.email }).exec();
-
-    if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-      return res.status(400).json({ error: "Wrong Credentials" });
+    // console.log("backend");
+    const {email,password}=req.body
+    if (!email || !password) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Email and password are required." ,name:"none"});
+    }
+    const user = await stateregistration.findOne({ email }).exec();
+    console.log("user"+user);
+    if (!user || (req.body.password!==user.password)) {
+      console.log("here");
+      return res.status(400).json({ success: false, message: "Wrong Credentials",name:user.name });
     }
 
     //const { password,  ...others } = user._doc;
-    res.status(200).json({success:true});
+    // res.status(200).json({success:true});
     // navigate('/citfolder/cithome');
-  } catch (err) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+    const userinfo = {
+      id: user._id,
+      user: user.email,
+    };
+    // console.log(userinfo);
+    const accessToken = createAccessToken(userinfo);
+    const refreshToken = createRefreshToken({ user: user.email });
+    user.refreshToken = refreshToken;
+    const result = await user.save();
+    // console.log(result);
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.status(201).json({
+      message: "Logged in successfully",
+      success: true,
+      accessToken: accessToken,
+      user: user.email,
+    });
+    // next();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message,name:"none" });
+  } 
 });
 
 
