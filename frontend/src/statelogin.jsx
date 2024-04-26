@@ -62,7 +62,6 @@ function StateLogin(){
           localStorage.setItem("email", user);
 
           const from = location.state?.from?.pathname || `/statefolder/statehome`;
-      // handleSuccess(message);
           setAuth({ user, accessToken });
           setTimeout(() => {
             navigate(from, { replace: true });

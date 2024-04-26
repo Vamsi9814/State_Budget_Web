@@ -1,50 +1,3 @@
-/*const express =require('express');
-const router = express.Router();
-// const bcrypt = require('bcrypt');
-
-//import citregistration from '../models/citizen.js';
-const stateregistration = require('../models/state.js');
-
-
-router.post('/stateregister', async (req, res) => {
-    console.log(req.body)
-    try {
-        const { statename,stateid,email,password,aadharNumber } = req.body  
-        // console.log(req.body);      
-
-        if (!statename || !stateid || !email|| !password || !aadharNumber) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
-
-        const hashedPwd = await bcrypt.hash(password, 10);
-        const newUser = { statename, stateid, email, password: hashedPwd,aadharNumber};
-
-        const user = await stateregistration.create(newUser);
-        res.status(200).json(user);
-        
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-router.post("/statelogin", async (req, res) => {
-    try {
-        const user = await stateregistration.findOne({ email: req.body.email });
-
-        if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-            return res.status(400).json({ error: 'Wrong Credentials' });
-        }
-
-        const { password,aadharNumber, ...others } = user._doc;
-        res.status(200).json(others);
-    } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-module.exports=  router;*/
-
-
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -54,8 +7,59 @@ const {
 } = require("../utils/createSecretToken");
 const jwt = require("jsonwebtoken");
 
-//import citregistration from '../models/state.js';
 const stateregistration = require("../models/state.js");
+const districtbudget1 = require('../models/district')
+const districtbudget2 = require('../models/district2')
+const districtbudget3 = require('../models/district3')
+
+router.post("/adddistrict", async (req, res) => {
+  try {
+    const { districtName, budget1, budget2, budget3 } = req.body;
+    console.log(req.body);
+
+    if (!districtName || !budget1 || !budget2 || !budget3) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newUser1 = {
+      name: districtName,
+      allocatedbudget: budget1,
+      usedbudget: 0,
+    };
+    console.log("came here");
+    await districtbudget1.create(newUser1);
+    console.log("passed above");
+
+    const newUser2 = {
+      districtName,
+      allocatedbudget: budget2,
+      usedbudget: 0,
+    };
+    await districtbudget2.create(newUser2);
+
+    const newUser3 = {
+      districtName,
+      allocatedbudget: budget3,
+      usedbudget: 0,
+    };
+    await districtbudget3.create(newUser3);
+
+    res.status(200).json({ message: "District added successfully" });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.get("/budget", async (req, res)=> {
+  try {
+    const data1 = await districtbudget1.find({});
+    const data2= await districtbudget2.find({});
+    const data3 = await districtbudget3.find({});
+    res.status(200).json({data1: data1,data2:data2,data3:data3});
+  } catch (error) {
+    res.status(500).json(error);
+  }
+})
 
 router.post("/stateregister", async (req, res) => {
   try {
@@ -90,20 +94,6 @@ router.post("/stateregister", async (req, res) => {
   }
 });
 
-// router.post("/statelogin", async (req, res) => {
-//   try {
-//     const user = await stateregistration.findOne({ email: req.body.email });
-
-//     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-//       return res.status(400).json({ error: "Wrong Credentials" });
-//     }
-
-//     const { password, aadharNumber, ...others } = user._doc;
-//     res.status(200).json(others);
-//   } catch (err) {
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
 
 router.post("/statelogin", async (req, res) => {
   try {

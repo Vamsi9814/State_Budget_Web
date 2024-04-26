@@ -67,6 +67,7 @@ router.post("/citregister", async (req, res) => {
     console.log(req.body);
     const userinfo = {
       id: user._id,
+      role:0,
       user: user.email,
     };
     // console.log(userinfo);
@@ -86,6 +87,7 @@ router.post("/citregister", async (req, res) => {
       success: true,
       accessToken: accessToken,
       user: user.email,
+      role:0,
     });
     // next();
   } catch (error) {
@@ -108,10 +110,6 @@ router.post("/citlogin", async (req, res) => {
     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
       return res.status(400).json({ success: false, message: "Wrong Credentials" });
     }
-
-    //const { password,  ...others } = user._doc;
-    // res.status(200).json({success:true});
-    // navigate('/citfolder/cithome');
     const userinfo = {
       id: user._id,
       role: 0,
