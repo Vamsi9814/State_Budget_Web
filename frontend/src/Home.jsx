@@ -2,12 +2,34 @@ import React, { useState } from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
 import { useNavigate,useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 function Home() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let isAuth = localStorage.getItem('email');
+    if (isAuth && isAuth !== 'undefined') {
+      navigate('/citfolder/cithome');
+
+      // Prevent going back to the previous page
+      window.history.pushState(null, null, '/citfolder/cithome');
+      window.addEventListener('popstate', handlePopState);
+    }
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate]);
+
+  const handlePopState = (event) => {
+    event.preventDefault();
+    window.history.pushState(null, null, '/citfolder/cithome');
+  };
       const [activeMinistry, setActiveMinistry] = useState(null);
       const [activeSubOption, setActiveSubOption] = useState(null);
-      const navigate = useNavigate();
       const handleMinistryClick = (ministry) => {
         
         setActiveMinistry(ministry);
@@ -29,16 +51,13 @@ function Home() {
               </div>
               <ul>
               <li className="nav-item">
-                <Link  to="/" className="nav-link">Home</Link>
+                <Link  to="/citfolder/cithome" className="nav-link">Home</Link>
                 </li>
                 <li className="nav-item">
                 <Link  to="/aboutus" className="nav-link">About Us</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/login" className="nav-link">Login</Link>
-                </li>
-                <li className="nav-item">
-                    <Link to="/register" className="nav-link">Register</Link>
+                    <Link to="/logout" className="nav-link">Logout</Link>
                 </li>
                 <li className="nav-item">
                 <Link  to="/contact" className="nav-link">Contact</Link>
@@ -90,15 +109,15 @@ function Home() {
         <section className="stats">
           <div className="stat">
             <h3>Total Budget</h3>
-            <p className="amount">$100B</p>
+            <p className="amount">100Cr</p>
           </div>
           <div className="stat">
             <h3>Revenue</h3>
-            <p className="amount">$80B</p>
+            <p className="amount">80Cr</p>
           </div>
           <div className="stat">
             <h3>Expenditure</h3>
-            <p className="amount">$95B</p>
+            <p className="amount">75Cr</p>
           </div>
         </section>
 

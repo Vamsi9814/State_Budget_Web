@@ -5,11 +5,11 @@ function MinNavbar1() {
   <div className="bar">
     <div className="heading" >
       {/* <img src="/public/budget.jpg" alt="budget image" /> */}
-      <img src="./stateimage.png" alt="state image" />
+      <img src="../public/stateimage.png" alt="state image" style={{"borderRadius":"100px"}} />
       <h1>Telangana State Budget</h1>
     </div>
     <div>
-    <nav className="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-lg bg-light" style={{"marginLeft":"370px","marginTop":"-65px","borderRadius":"10px","position":"fixed"}}>
       <div className="container-fluid">
         <Link  to="/" className="navbar-brand">TC</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@ function MinNavbar1() {
             <Link  to="/fachi" className="nav-link">Achievements</Link>
             </li>
             <li className="nav-item">
-            <Link  to="/fgallery" className="nav-link">Gallery</Link>
+            <Link  to="/logout1" className="nav-link">Logout</Link>
             </li>
           </ul>
         </div>

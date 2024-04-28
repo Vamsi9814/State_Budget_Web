@@ -1,48 +1,3 @@
-/*const express =require('express');
-const router = express.Router();
-// const bcrypt = require('bcrypt');
-
-//import citregistration from '../models/citizen.js';
-const minregistration = require('../models/ministry.js');
-
-
-router.post('/minregister', async (req, res) => {
-    console.log(req.body)
-    try {
-        const { minname,minid,email,password,aadharNumber } = req.body  
-        // console.log(req.body);      
-
-        if (!minname || !minid || !email|| !password || !aadharNumber) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
-
-        const hashedPwd = await bcrypt.hash(password, 10);
-        const newUser = { minname, minid, email, password: hashedPwd,aadharNumber};
-
-        const user = await minregistration.create(newUser);
-        res.status(200).json(user);
-        
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-router.post("/minlogin", async (req, res) => {
-    try {
-        const user = await minregistration.findOne({ email: req.body.email });
-
-        if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-            return res.status(400).json({ error: 'Wrong Credentials' });
-        }
-
-        const { password,aadharNumber, ...others } = user._doc;
-        res.status(200).json(others);
-    } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-module.exports=  router;*/
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -170,6 +125,41 @@ router.route("/refresh").get( async (req, res) => {
     });
   });
 });
+
+router.post('/logout', async (req, res) => {
+  try {
+    const cookies = req.cookies;
+  if (!cookies?.jwt) {
+    console.log("No cookie found");
+    return res.sendStatus(204);
+  } //No content
+  const refreshToken = cookies.jwt;
+  console.log("there is something fishy");
+  // Is refreshToken in db?
+  const user = await minregistration.findOne({ refreshToken }).exec();
+  if (!user) {
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+    return res.sendStatus(204);
+  }
+  console.log("coming till here");
+  // Delete refreshToken in db
+  user.refreshToken = "";
+  const result = await user.save();
+  // console.log("Logout", result);
+
+  res.clearCookie("jwt", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+  });
+  //   console.log("logged out");
+  res.status(204).json({ message: "Logged Out Successfully" });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.sendStatus(500);
+  }
+});
 const Logout = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) {
@@ -184,7 +174,7 @@ const Logout = async (req, res) => {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     return res.sendStatus(204);
   }
-
+  console.log("coming till here");
   // Delete refreshToken in db
   user.refreshToken = "";
   const result = await user.save();

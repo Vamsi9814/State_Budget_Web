@@ -3,25 +3,17 @@ import Carousel from './SliderDataTransport';
 import axios from 'axios';
 import './Transportation.css';
 // const nodemailer = require('nodemailer');
+import { ToastContainer, toast } from "react-toastify";
 
 
 function Transportationciti1() {
   const [editIndex, setEditIndex] = useState(-1)
-  const [budgetData, setBudgetData] = useState([
-    // { serialNumber: 1, districtName: 'Khammam', allocatedbudget: 10000, usedbudget: 8000 },
-    // { serialNumber: 2, districtName: 'Badradri', allocatedbudget: 15000, usedbudget: 12000 },
-    // { serialNumber: 3, districtName: 'Ranagreddy', allocatedbudget: 20000, usedbudget: 18000 },
-    // { serialNumber: 4, districtName: 'Karimnagar', allocatedbudget: 25000, usedbudget: 22000 },
-    // { serialNumber: 5, districtName: 'Adilabad', allocatedbudget: 18000, usedbudget: 15000 },
-    // { serialNumber: 6, districtName: 'Nalgonda', allocatedbudget: 22000, usedbudget: 20000 },
-    // { serialNumber: 7, districtName: 'Warangal', allocatedbudget: 30000, usedbudget: 28000 },
-    // { serialNumber: 8, districtName: 'District H', allocatedbudget: 17000, usedbudget: 14000 },
-  ]);
+  const [budgetData, setBudgetData] = useState([]);
   const [editedBudget, setEditedBudget] = useState(0)
-  const [editedDistrict, setEditedDistrict] = useState('')
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [complaint, setComplaint] = useState('');
+  const [disable,setDisabled]=useState(false);
 
   useEffect(()=>{
     (async ()=>{
@@ -70,15 +62,15 @@ function Transportationciti1() {
           
     }, [sortBy])
 
-  // const sortedData = budgetData.length>0 ? budgetData.sort((a, b) => {
-  //   if (sortBy === 'allocatedbudget') {
-  //     return b.allocatedbudget - a.allocatedbudget;
-  //   } else if (sortBy === 'usedbudget') {
-  //     return b.usedbudget - a.usedbudget;
-  //   } else {
-  //     return a.serialNumber - b.serialNumber;
-  //   }
-  // }) : [];
+  const sortedData = budgetData.length>0 ? budgetData.sort((a, b) => {
+    if (sortBy === 'allocatedbudget') {
+      return b.allocatedbudget - a.allocatedbudget;
+    } else if (sortBy === 'usedbudget') {
+      return b.usedbudget - a.usedbudget;
+    } else {
+      return a.serialNumber - b.serialNumber;
+    }
+  }) : [];
 
   const filteredData = budgetData.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -173,20 +165,33 @@ function Transportationciti1() {
     try{
       console.log("inside this");
       // const emailTo = localStorage.getItem("email")
+      setDisabled(true)
+      toast.success("Sending Email, Please wait!", {
+        position: "top-right",
+    });
       const response=await axios.post("http://localhost:8000/cuse/send-email",{
         complaint:complaint,
         mail:localStorage.getItem("email")
       });
+      toast.success("Email Sent", {
+        position: "top-right",
+    });
+    setComplaint("");
+    setDisabled(false);
   }catch(error){
-    console.log("error sending mail")
+    console.log("error sending mail");
+    setDisabled(false);
   }
   };
 
 
   return (
-    <div>
+    <div className="app">
       {/* <Header /> */}
-      <Carousel />
+      {/* <Carousel /> */}
+      <ToastContainer/>
+      <h1>Finance Sector</h1>
+      <img src="../public/finance.jpg" alt="finance image" className="background-image" />
       <div className="transport-container">
         <h2>Budget Table</h2>
         <div className="search-sort-container">
@@ -231,13 +236,18 @@ function Transportationciti1() {
 </tbody>
         </table>
         <div className="complaint-container">
-          <h3 style={{"backgroundColor":"black"}}>Submit a Complaint</h3>
+          <h3 style={{"color":"black"}}>Submit a Complaint</h3>
           <textarea
             placeholder="Enter your complaint here..."
             value={complaint}
             onChange={handleComplaint}
           />
-          <button onClick={handleEmailSubmit}>Submit</button>
+          {complaint !== "" &&(
+            <button disabled={disable} onClick={handleEmailSubmit}  style={disable?{"backgroundColor":"grey",cursor: "not-allowed"}:{}}>
+              Submit
+            </button>
+          )}
+
         </div>
       </div>
     </div>

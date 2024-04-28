@@ -1,55 +1,64 @@
-/*import React from "react";
-function carusol(){
-    return (<>
-    <div id="carouselExample" class="carousel slide">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="..." class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div></>)
-}
+import React, { useState } from 'react';
+import './Carousel.css';
 
-export default carusol;*/
+// Sample images
+import image1 from '../public/stateimage.png';
+import image2 from '../public/aadhar.png';
+import image3 from '../public/aadhar.png';
 
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
 
-class DemoCarousel extends Component {
-    render() {
-        return (
-            <Carousel>
-                <div>
-                    <img src="assets/1.jpeg" />
-                    <p className="legend">Legend 1</p>
-                </div>
-                <div>
-                    <img src="assets/2.jpeg" />
-                    <p className="legend">Legend 2</p>
-                </div>
-                <div>
-                    <img src="assets/3.jpeg" />
-                    <p className="legend">Legend 3</p>
-                </div>
-            </Carousel>
-        );
-    }
+const Carousel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = [
+    image1,
+    image2,
+    image3,
+    // Add more images here
+  ];
+
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = () => {
+    const isLastSlide = currentIndex === images.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
+  return (
+    <div className="carousel">
+      <div className="carousel-inner">
+        <div className="carousel-item active">
+          <img src={images[currentIndex]} alt={`Slide ${currentIndex + 1}`} />
+        </div>
+      </div>
+      <div className="carousel-controls">
+        <button className="carousel-control prev" onClick={goToPrevious}>
+          &lt;
+        </button>
+        <div className="carousel-indicators">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={`carousel-indicator ${currentIndex === index ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+            />
+          ))}
+        </div>
+        <button className="carousel-control next" onClick={goToNext}>
+          &gt;
+        </button>
+      </div>
+    </div>
+  );
 };
 
-ReactDOM.render(<DemoCarousel />, document.querySelector('.demo-carousel'));
+export default Carousel;

@@ -2,8 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import AuthContext from './context/AuthProvider';
 
 export default function Check() {
-//   const { currentUser } = useContext(AuthContext);
-     const [email, setEmail] = React.useState(null)
+       const [email, setEmail] = React.useState(null)
     useEffect(()=>{
         setEmail(localStorage.getItem("email"))
         console.log(localStorage.getItem("email"))

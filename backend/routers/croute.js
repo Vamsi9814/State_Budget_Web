@@ -33,8 +33,10 @@ router.post("/send-email", async(req,res)=>{
       text: complaint
   });
   console.log("Mail Sent");
+  res.status(200).json({message:"mail sent"});
     } catch (error) {
       console.error('Error sending email:', error);
+      res.status(500).json({message:"error"});
     }
 });
 
@@ -169,6 +171,28 @@ router.route("/refresh").get( async (req, res) => {
   });
 });
 
+router.post('/logout', async (req, res) => {
+  try {
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(204); // No content
+
+    const refreshToken = cookies.jwt;
+    const user = await Citregistration.findOne({ refreshToken }).exec();
+
+    if (!user) {
+      res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'None' });
+      return res.sendStatus(204);
+    }
+    user.refreshToken = '';
+    await user.save();
+    console.log("in user logout");
+    res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'None' });
+    res.sendStatus(204); 
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.sendStatus(500);
+  }
+});
 const Logout = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) {
@@ -176,15 +200,11 @@ const Logout = async (req, res) => {
     return res.sendStatus(204);
   } //No content
   const refreshToken = cookies.jwt;
-
-  // Is refreshToken in db?
   const user = await Citregistration.findOne({ refreshToken }).exec();
   if (!user) {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
     return res.sendStatus(204);
   }
-
-  // Delete refreshToken in db
   user.refreshToken = "";
   const result = await user.save();
   // console.log("Logout", result);

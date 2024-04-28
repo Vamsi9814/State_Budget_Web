@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Carousel from './SliderDataTransport';
 import axios from 'axios';
 import './Transportation.css';
-
-function Transportation2() {
+import Check from './Check';
+import { ToastContainer, toast } from "react-toastify";
+function Transportation() {
   const [editIndex, setEditIndex] = useState(-1);
   const [budgetData, setBudgetData] = useState([]);
   const [editedBudget, setEditedBudget] = useState(0);
@@ -15,7 +16,7 @@ function Transportation2() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get('http://localhost:8000/duse2/daddbudget2');
+        const response = await axios.get('http://localhost:8000/duse3/daddbudget3');
         const data = response.data.budgetData;
         setBudgetData(data);
       } catch (error) {
@@ -32,9 +33,6 @@ function Transportation2() {
     setSortBy(value);
   };
 
-  const handleComplaint = (event) => {
-    setComplaint(event.target.value);
-  };
 
   useEffect(() => {
     if (sortBy === 'allocatedbudget') {
@@ -76,7 +74,7 @@ function Transportation2() {
 
     const newUsedBudget = editedBudget + usedBudget;
     try {
-      const response = await axios.post('http://localhost:8000/duse2/daddbudget2', {
+      const response = await axios.post('http://localhost:8000/duse3/daddbudget3', {
         districtName,
         usedbudget: newUsedBudget,
       });
@@ -93,32 +91,19 @@ function Transportation2() {
     setEditIndex(-1);
   };
 
-  const handleEmailSubmit = async () => {
-    try {
-      const response = await axios.post('http://localhost:8000/cuse/send-email', {
-        complaint,
-      });
-      if (response.ok) {
-        console.log('Email sent successfully');
-      } else {
-        console.error('Failed to send email');
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  };
 
   return (
     <div>
       {/* <Header /> */}
-      <Carousel />
+      {/* <Carousel /> */}
+       <img src="../public/education.jpeg" alt="education image" className="background-image" style={{ opacity: 0.8 }}/>
       <div className="transport-container">
         <h2>Budget Table</h2>
         <div className="search-sort-container">
           <div className="search-container">
             <input
               type="text"
-              placeholder="Search by district name..."
+              placeholder="Search by district districtName..."
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -169,7 +154,7 @@ function Transportation2() {
                   <button
                     style={{
                       padding: '5px 10px',
-                      backgroundColor: editIndex === index ? '#007bff' : '#001060', // Change button color for editing
+                      backgroundColor: editIndex === index ? '#007bff' : '#001060',
                       color: '#fff',
                       border: 'none',
                       borderRadius: '5px',
@@ -184,9 +169,12 @@ function Transportation2() {
             ))}
           </tbody>
         </table>
+        {/* <Check/> */}
       </div>
+      <ToastContainer />
     </div>
+
   );
 }
 
-export default Transportation2;
+export default Transportation;

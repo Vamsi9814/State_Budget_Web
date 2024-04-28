@@ -126,12 +126,12 @@ function CitLogin(){
                 <button type="submit" className="btn btn-primary btn-block mb-4" onclick="verifydata">Login</button>
 
 
-                <div class="google-btn">
+                {/* <div class="google-btn">
                     <div class="google-icon-wrapper">
                         <img class="google-icon" src="/google image.png"/>
                     </div>
                     <p class="btn-text"><b>Sign in with Google</b></p>
-                </div>
+                </div> */}
 
                 <p id="paragraph">Do Not have an account?</p>
                 <Link to="/register">Create an account</Link>

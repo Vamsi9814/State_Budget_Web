@@ -3,7 +3,7 @@ import Carousel from './SliderDataTransport';
 import axios from 'axios';
 import './Transportation.css';
 import Check from './Check';
-
+import { ToastContainer, toast } from "react-toastify";
 function Transportation() {
   const [editIndex, setEditIndex] = useState(-1);
   const [budgetData, setBudgetData] = useState([]);
@@ -95,7 +95,8 @@ function Transportation() {
   return (
     <div>
       {/* <Header /> */}
-      <Carousel />
+      {/* <Carousel /> */}
+       <img src="../public/finance.jpg" alt="finance image" className="background-image" style={{ opacity: 0.8 }}/>
       <div className="transport-container">
         <h2>Budget Table</h2>
         <div className="search-sort-container">
@@ -168,9 +169,11 @@ function Transportation() {
             ))}
           </tbody>
         </table>
-        <Check/>
+        {/* <Check/> */}
       </div>
+      <ToastContainer />
     </div>
+
   );
 }
 

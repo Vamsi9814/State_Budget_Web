@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {BrowserRouter, Route,Routes} from 'react-router-dom';
 import './App.css'
 // import Head from './Head';
+import "react-toastify/dist/ReactToastify.css";
 //import Transportation from './Transportation';
 import Transportationciti1 from './Transportationciti1';
 import Transportationciti2 from './Transportationciti2';
@@ -36,6 +37,8 @@ import Budget from './statefolder/budget';
 import BudgetMin from './statefolder/budgetmin';
 import PersistLogin from "./components/PersistLogin"
 import RequireAuth from './components/RequireAuth';
+import Logout from './Logout'
+import Logout1 from './Logout1';
 
 
 const ROLE = {
@@ -49,16 +52,19 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<PseudoHome/>}/>
-        <Route path="/" element={<Navbar/>}/>
-        <Route path="/about" element={<About/>}/>
+        {/* <Route path="/" element={<Navbar/>}/> */}
+        <Route path="/aboutus" element={<About/>}/>
         <Route path="/login" element={<LoginAs />}/>
         <Route path="/register" element={<RegisterAs/>}/>
         <Route path="/contact" element={<Contact/>}/>
         <Route path="/gallery" element={<Gallery/>}/>
+        <Route path="/logout" element={<Logout/>}/>
+        <Route path="/logout1" element={<Logout1/>}/>
 
 
         <Route element={<PersistLogin usertype={"cuse"} />}>
           <Route element={<RequireAuth allowedRole={ROLE.Citizen} />}>
+          <Route path="/" element={<PseudoHome/>}/>
             <Route path="/citfolder/cithome" element={<Home/>}/>
             <Route path="/citizen/finance" element={<Transportationciti1/>}/>
             <Route path="/citizen/education" element={<Transportationciti2/>}/>

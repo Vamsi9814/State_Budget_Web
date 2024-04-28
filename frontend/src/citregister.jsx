@@ -7,6 +7,9 @@ import { useNavigate,useLocation } from 'react-router-dom';
 //import fetch from 'node-fetch'
 import axios from "axios";
 import useAuth from "./hooks/useAuth";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 function CitRegister(){
   // const [redirectUrl, setRedirectUrl] = useState("");
   //const history = useHistory();
@@ -17,7 +20,11 @@ function CitRegister(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [aadharNumber, setAadharNumber] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
     function takelname(event){
       setLastName(
         event.target.value
@@ -63,7 +70,38 @@ function CitRegister(){
     const from = location.state?.from?.pathname || `/citfolder/cithome`;
     const postdata = async(e)=>{
       e.preventDefault();
+      if (!handleFirstNameChange()) {
+        alert("Please enter a valid first name (only letters).");
+        return;
+      }
+    
+      // Validate lastName
+      if (!handleLastNameChange()) {
+        alert("Please enter a valid last name (only letters).");
+        return;
+      }
+    
+      // Validate email
+      if (!handleEmailChange()) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+    
+      // Validate password
+      if (!handlePasswordChange()) {
+        alert(
+          "Please enter a valid password (at least 8 characters, including at least one letter and one number)."
+        );
+        return;
+      }
+    
+      // Validate aadharNumber
+      if (!handleAadharChange()) {
+        alert("Please enter a valid 12-digit Aadhaar number.");
+        return;
+      }
       try{
+
       const response= await axios.post("http://localhost:8000/cuse/citregister",{
         firstname: firstName,
         lastname: lastName,
@@ -87,10 +125,10 @@ function CitRegister(){
     
     function handleFirstNameChange(){
       //(event)=>setFirstName(event.target.value);
-      const { value } = firstName;
+      const value  = firstName;
       console.log(firstName);
       if (/^[A-Za-z]+$/.test(value)) {
-        setFirstName(value);
+        console.log("true");
         return true;
       }
       return false;
@@ -98,9 +136,9 @@ function CitRegister(){
 
     function handleLastNameChange(){
       //(event)=>setFirstName(event.target.value);
-      const { value } = lastName;
-      if (/^[a-z]+$/.test(value)) {
-        setLastName(value);
+      console.log(lastName);
+      if (/^[A-Za-z]+$/.test(lastName)) {
+        setLastName(lastName);
         return true;
       }
       return false;
@@ -109,9 +147,8 @@ function CitRegister(){
 
     function handleAadharChange(){
       // (event)=>setAadharNumber(event.target.value)
-      const { value } = aadharNumber;
-      if (/^\d{12}$/.test(value)) {
-        setAadharNumber(value);
+      if (/^\d{12}$/.test(aadharNumber)) {
+        setAadharNumber(aadharNumber);
         return true;
       }
       return false;
@@ -119,22 +156,21 @@ function CitRegister(){
 
     function handlePasswordChange(){
       // (event)=>setAadharNumber(event.target.value)
-      const { value } = password;
-      if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(value)) {
-        setPassword(value);
+      if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+        setPassword(password);
         return true;
       }
       return false;
     };
 
-    function handleEmailChange(){
-      const { value } = email;
-      if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
-        setName(value);
+    function handleEmailChange() {
+      if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        setEmail(email); // Assuming you have a state variable named 'email' to store the email value
         return true;
       }
       return false;
-    };
+    }
+    
 
     return(
         <>
@@ -178,14 +214,27 @@ function CitRegister(){
                 </div>
 
                 <div className="form-outline mb-4">
-                  <input type="email" id="mailid" className="form-control" required="true" value={email} onChange={(event)=>setEmail(event.target.value)} />
+                  <input type="email" id="form3Example3" className="form-control" required="true" value={email} onChange={(event)=>setEmail(event.target.value)} />
                   <label className="form-label" htmlFor="mailid" >Email address</label>
                 </div>
 
                 <div className="form-outline mb-4">
-                  <input type="password" id="form3Example4" required="true" value={password}  onChange={(event)=>setPassword(event.target.value)} className="form-control" />
-                  <label className="form-label" htmlFor="form3Example4" >Password</label>
-                </div>
+      <input
+        type={showPassword ? 'text' : 'password'}
+        id="form3Example4"
+        required={true}
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        className="form-control"
+      />
+      <label className="form-label" htmlFor="form3Example4">
+        Password
+      </label>
+      <div>
+      <button className="toggle-password-button" onClick={togglePasswordVisibility} style={{"borderRadius":"50px","height":"40px"}}>
+        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} style={{"width":"20px","marginTop":"-7px","marginBottom":"10px","position":"absolute","marginLeft":"-10px"}}/>
+      </button></div>
+    </div>
 
                 <div className="form-outline mb-4">
                   <input type="number" id="aadhar" required="true" value={aadharNumber}  onChange={(event)=>setAadharNumber(event.target.value)} className="form-control" />
@@ -195,7 +244,7 @@ function CitRegister(){
 
                 <button type="submit" className="btn btn-primary btn-block mb-4">Sign up</button>
 
-                <div class="google-btn">
+                {/* <div class="google-btn">
                     <div class="google-icon-wrapper">
                         <img class="google-icon" src="/google image.png"/>
                     </div>
@@ -205,8 +254,8 @@ function CitRegister(){
                     <div class="aa-icon-wrapper">
                         <img class="aadhar-icon" src="/aadhar.png"/>
                     </div>
-                    <p class="btn-text"><b>Sign in with Aadhaar </b></p>
-                </div>
+                    <p class="btn-text"><b>Sign in with Aadhaar </b></p> */}
+                {/* </div> */}
               </form>
             </div>
           </div>

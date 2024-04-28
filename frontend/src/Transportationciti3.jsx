@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import Carousel from './SliderDataTransport';
 import axios from 'axios';
-import Header from './components/Header';
 import './Transportation.css';
+// const nodemailer = require('nodemailer');
+import { ToastContainer, toast } from "react-toastify";
 
-function Transportation3() {
+
+function Transportationciti3() {
   const [editIndex, setEditIndex] = useState(-1)
-  const [budgetData, setBudgetData] = useState([
-    // { serialNumber: 1, districtName: 'Khammam', allocatedbudget: 10000, usedbudget: 8000 },
-    // { serialNumber: 2, districtName: 'Badradri', allocatedbudget: 15000, usedbudget: 12000 },
-    // { serialNumber: 3, districtName: 'Ranagreddy', allocatedbudget: 20000, usedbudget: 18000 },
-    // { serialNumber: 4, districtName: 'Karimnagar', allocatedbudget: 25000, usedbudget: 22000 },
-    // { serialNumber: 5, districtName: 'Adilabad', allocatedbudget: 18000, usedbudget: 15000 },
-    // { serialNumber: 6, districtName: 'Nalgonda', allocatedbudget: 22000, usedbudget: 20000 },
-    // { serialNumber: 7, districtName: 'Warangal', allocatedbudget: 30000, usedbudget: 28000 },
-    // { serialNumber: 8, districtName: 'District H', allocatedbudget: 17000, usedbudget: 14000 },
-  ]);
+  const [budgetData, setBudgetData] = useState([]);
   const [editedBudget, setEditedBudget] = useState(0)
   const [editedDistrict, setEditedDistrict] = useState('')
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [complaint, setComplaint] = useState('');
+  
 
   useEffect(()=>{
     (async ()=>{
       try {
-        const response = await axios.get('http://localhost:8000/duse3/daddbudget3');
+        const response = await axios.get('http://localhost:8000/duse2/daddbudget2');
         const data = response.data.budgetData;
+        console.log(data);
         setBudgetData(data)
       } catch (error) {
         
@@ -35,7 +30,7 @@ function Transportation3() {
   }, [])
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value?.toLowerCase());
+    setSearchTerm(event.target.value.toLowerCase());
   };
 
   const handleSort = (value) => {
@@ -69,18 +64,18 @@ function Transportation3() {
           
     }, [sortBy])
 
-  // const sortedData = budgetData.length>0 ? budgetData.sort((a, b) => {
-  //   if (sortBy === 'allocatedbudget') {
-  //     return b.allocatedbudget - a.allocatedbudget;
-  //   } else if (sortBy === 'usedbudget') {
-  //     return b.usedbudget - a.usedbudget;
-  //   } else {
-  //     return a.serialNumber - b.serialNumber;
-  //   }
-  // }) : [];
+  const sortedData = budgetData.length>0 ? budgetData.sort((a, b) => {
+    if (sortBy === 'allocatedbudget') {
+      return b.allocatedbudget - a.allocatedbudget;
+    } else if (sortBy === 'usedbudget') {
+      return b.usedbudget - a.usedbudget;
+    } else {
+      return a.serialNumber - b.serialNumber;
+    }
+  }) : [];
 
   const filteredData = budgetData.filter(item =>
-    item?.districtName?.toLowerCase().includes(searchTerm?.toLowerCase())
+    item.districtName.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
   // Render the table rows using the filteredData
@@ -126,7 +121,7 @@ function Transportation3() {
     // setEditedDistrict(filteredData[index].districtName)
     // index.preventDefault();
     // try{
-    //   const response = await axios.post("http://localhost:8000/duse3/daddbudget3",{
+    //   const response = await axios.post("http://localhost:8000/duse2/daddbudget2",{
     //     districtName: editedDistrict,
     //     usedbudget: editedBudget,
     //   });
@@ -145,7 +140,7 @@ function Transportation3() {
     } else{
       const newUsedBudget = editedBudget + usedbudget;
       try{
-          const response = await axios.post("http://localhost:8000/duse3/daddbudget3",{
+          const response = await axios.post("http://localhost:8000/duse2/daddbudget2",{
             districtName: districtName,
             usedbudget: newUsedBudget,
           });
@@ -169,31 +164,38 @@ function Transportation3() {
   }
 
   const handleEmailSubmit = async () => {
-    try {
-      const response = await axios.post('http://localhost:8000/cuse/send-email', { // Assuming your backend is running on port 3001
-      complaint // Assuming `complaint` is defined elsewhere in your component
+    try{
+      console.log("inside this");
+      // const emailTo = localStorage.getItem("email")
+      const response=await axios.post("http://localhost:8000/cuse/send-email",{
+        complaint:complaint,
+        mail:localStorage.getItem("email")
       });
-      if (response.ok) {
-        console.log('Email sent successfully');
-      } else {
-        console.error('Failed to send email');
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
+      toast.success("Email Sent", {
+        position: "top-right",
+    });
+    console.log("vame in here");
+    setComplaint("Email Sent");
+    console.log("in send-email");
+  }catch(error){
+    console.log("error sending mail")
+  }
   };
 
+
   return (
-    <div>
+    <div className="app">
       {/* <Header /> */}
-      <Carousel />
+      {/* <Carousel /> */}
+      <h1>Health Sector</h1>
+      <img src="../public/health.jpeg" alt="health image" className="background-image" />
       <div className="transport-container">
         <h2>Budget Table</h2>
         <div className="search-sort-container">
           <div className="search-container">
             <input
               type="text"
-              placeholder="Search by district districtName..."
+              placeholder="Search by district name..."
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -210,7 +212,7 @@ function Transportation3() {
         <table>
           <thead>
             <tr>
-              <th>District districtName</th>
+              <th>District Name</th>
               <th>Allocated Budget</th>
               <th>Used Budget</th>
             </tr>
@@ -224,13 +226,29 @@ function Transportation3() {
       <input type='number' min={0}
               max={item.allocatedbudget - item.usedbudget} value={editedBudget} onChange={(e)=>setEditedBudget(parseInt(e.target.value))} placeholder="enter new data"></input>
       <button onClick={()=>handleSaveNewData(item.allocatedbudget, item.usedbudget, item.districtName)}>save</button></> :<p>{item.usedbudget}</p>}</td>
+      <td> 
+      </td>
     </tr>
   ))}
 </tbody>
         </table>
+        <div className="complaint-container">
+          <h3 style={{"color":"black"}}>Submit a Complaint</h3>
+          <textarea
+            placeholder="Enter your complaint here..."
+            value={complaint}
+            onChange={handleComplaint}
+          />
+          {complaint !== "" &&(
+            <button disabled={disable} onClick={handleEmailSubmit}  style={disable?{"backgroundColor":"grey",cursor: "not-allowed"}:{}}>
+              Submit
+            </button>
+          )}
+        </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 }
 
-export default Transportation3;
+export default Transportationciti3;

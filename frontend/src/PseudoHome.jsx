@@ -16,6 +16,7 @@ function PseudoHome() {
       };
     
       const handleSubOptionClick = (subOption) => {
+        console.log(auth?.user);
         setActiveSubOption(subOption);
       };
     
@@ -23,6 +24,7 @@ function PseudoHome() {
         <>
         <div className="App">
           <header className="App-header">
+            
             <img src="/stateimage.png" alt="state logo" style={{height:"150px",width:"150px"}}/>
             <nav>
               <div className="logo">
@@ -36,7 +38,9 @@ function PseudoHome() {
                 <Link  to="/aboutus" className="nav-link">About Us</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/login" className="nav-link">Login</Link>
+                  <>
+                    {auth?.user ? (<Link to="/logout" className="nav-link">Logout</Link>):( <Link to="/login" className="nav-link">Login</Link>)}
+                  </>
                 </li>
                 <li className="nav-item">
                     <Link to="/register" className="nav-link">Register</Link>
@@ -47,6 +51,7 @@ function PseudoHome() {
                 <li>
                   <>
                   {auth?.user ? (<></>):( <Link to="/login" className="nav-item">Ministries</Link>)}
+                  
                   </>
                   {/* <div className="dropdown-content">
                     <Link to="/citizen/finance"
@@ -77,8 +82,8 @@ function PseudoHome() {
         <section className="hero">
           <div className="hero-content">
             <h2>Transparent Budget</h2>
-            <p>Ensuring fiscal responsibility and efficient resource allocation.</p>
-            <a href="#" className="btn">Learn More</a>
+            <p style={{"color":"black"}}>Ensuring fiscal responsibility and efficient resource allocation.</p>
+            <Link to="/aboutus" className="btn">Learn More</Link>
           </div>
           <div className="hero-image">
             {/* <img src={heroImage} alt="Hero" /> */}
