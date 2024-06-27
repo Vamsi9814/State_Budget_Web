@@ -126,7 +126,7 @@ function PseudoHome() {
               <div className="sector-icon">
                 {/* <img src={infrastructureIcon} alt="Infrastructure" /> */}
               </div>
-              <h3>Agriculture</h3>
+              <h3>Finance</h3>
               <p>25% of the total budget is allocated to agricultural development, building robust transportation, utilities, and public facilities.</p>
             </div>
             <div className="sector welfare">
